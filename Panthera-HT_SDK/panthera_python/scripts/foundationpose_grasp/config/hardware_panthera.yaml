@@ -1,0 +1,96 @@
+# Panthera-HT + wrist-mounted D435i FoundationPose grasp config
+# Hand-eye: manual_20260819_150758 (Park, T_link6_cam)
+# Grasp rule: same as Realman — FP green-box top face + normal approach;
+# Panthera approach axis is tool_link +X
+
+arm:
+  backend: panthera
+  model: Panthera-HT
+  auto_init_on_start: true
+  # Observe / start pose: Host Joints panel (2026-08-21)
+  # Joints rad: 1.59, 1.15, 0.48, 0.00, -0.05, 0.04
+  init_joints_rad:
+  - 1.59
+  - 1.15
+  - 0.48
+  - 0.0
+  - -0.05
+  - 0.04
+  # On start, auto-fill tool_link pose6 from joint FK
+  init_pose6: []
+  move_duration_s: 4.0
+  approach_duration_s: 3.0
+  descend_duration_s: 2.5
+  lift_duration_s: 2.5
+  fp_grasp:
+    orientation_mode: fp
+    grasp_orientation: top_face
+    # Panthera tool_link: +X approach, +Z jaw open/close (open∥long edge → grasp short edge)
+    approach_axis: x
+    tcp_frame: tool_link
+    # First version defaults to frozen Space frame; set true to retarget from UDP
+    live_track: false
+    live_track_port: 8899
+    live_track_hz: 10
+    live_track_arrive_m: 0.025
+    live_track_lost_frames: 15
+    live_track_min_delta_m: 0.005
+    live_track_min_delta_deg: 3.0
+    live_track_finish_on_lost: true
+    # Tea-caddy half-extent placeholder (prefer pose JSON meta / mesh)
+    object_half_extents_m:
+    - 0.0265
+    - 0.0335
+    - 0.065
+    table_z_m: 0.0
+    grasp_table_clearance_m: 0.015
+    grasp_tcp_above_top_m: 0.0
+    grasp_vertical_extra_m: 0.0
+    # tool_link≈fingertip: positive=stop above top; negative=dip past top (side-clamp short edge)
+    # Measured +10mm tip-on-top too shallow; set to ~22mm dip
+    flange_above_top_m: -0.022
+    grasp_face_inset_m: 0.008
+    approach_m: 0.08
+    grasp_above_m: 0.08
+    grasp_z_offset_m: 0.0
+    lift_m: 0.10
+    retreat_axis: neg_x
+    lift_axis: neg_x
+
+gripper:
+  model: Panthera-builtin
+  # tool_link≈fingertip: negative=dip past top then clamp (positive stops too shallow on surface)
+  tcp_to_pad_m: -0.022
+  open_pos: 1.6
+  close_pos: 0.0
+  open_vel: 0.5
+  close_vel: 0.5
+  max_tqu: 0.5
+
+camera:
+  model: D435i
+  hand_eye_mode: eye_in_hand
+  serial: '347622074620'
+  # = handeye_output/manual_20260819_150758/handeye_result.yaml T_gripper_cam (relative to link6)
+  camera_to_end_effector:
+  - - 0.02904470530355674
+    - 0.017420314135621784
+    - 0.9994263043112511
+    - 0.054036553507894915
+  - - -0.9987921087511786
+    - -0.03913734080244047
+    - 0.02970845083957352
+    - 0.033457546782946726
+  - - 0.03963241842486098
+    - -0.9990819792240924
+    - 0.016262539760653727
+    - 0.055561090792424286
+  - - 0.0
+    - 0.0
+    - 0.0
+    - 1.0
+
+bridge:
+  pose_udp_port: 8899
+
+handeye_result: ../handeye_output/manual_20260819_150758/handeye_result.yaml

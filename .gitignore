@@ -1,0 +1,45 @@
+# OS / editor
+.DS_Store
+Thumbs.db
+*.swp
+.idea/
+.vscode/
+*.log
+
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.venv/
+venv/
+~/venvs/
+
+# Node / frontend build
+**/node_modules/
+**/dist/
+npm-debug.log*
+yarn-error.log*
+
+# Local env / secrets
+.env
+.env.*
+*.pem
+
+# Build / cache
+**/build/
+**/.cache/
+*.o
+*.so
+*.a
+
+# Large local artifacts (keep SDK wheels tracked)
+*.mp4
+*.bag
+*.mcap
+
+# Local heavy / generated (not for GitHub)
+third_party/
+tmp_handeye_preview/
+**/handeye_output/
+**/foundationpose_grasp/**/__pycache__/
+docs/*.docx
